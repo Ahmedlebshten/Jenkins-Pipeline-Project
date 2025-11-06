@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
                 git branch: 'master', url: 'https://github.com/Ahmedlebshten/Jenkins-Pipeline-Project'
@@ -16,7 +17,6 @@ pipeline {
         stage('Terraform FMT') {
             steps {
                 sh '''
-                    cd terraform
                     terraform fmt -check
                 '''
             }
@@ -25,7 +25,6 @@ pipeline {
         stage('Terraform Validate') {
             steps {
                 sh '''
-                    cd terraform
                     terraform init -backend=false
                     terraform validate
                 '''
@@ -35,8 +34,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 sh '''
-                    cd terraform
-                    terraform plan
+                    terraform plan -out=tfplan
                 '''
             }
         }
@@ -45,8 +43,7 @@ pipeline {
             steps {
                 input message: 'Apply changes?', ok: 'Yes, apply'
                 sh '''
-                    cd terraform
-                    terraform apply -auto-approve
+                    terraform apply -auto-approve tfplan
                 '''
             }
         }
