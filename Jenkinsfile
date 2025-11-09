@@ -5,6 +5,7 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         SONAR_TOKEN           = credentials('sonar-token')
+        SONAR_SCANNER_PATH    = '/opt/sonar-scanner/bin/sonar-scanner'
     }
 
     stages {
@@ -31,7 +32,7 @@ pipeline {
                 echo "🔹 Running SonarQube analysis..."
                 withSonarQubeEnv('SonarQube') {
                     sh '''
-                        sonar-scanner \
+                        $SONAR_SCANNER_PATH \
                         -Dsonar.projectKey=EKS-Infrastructure \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://$SONAR_HOST_URL \
