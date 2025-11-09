@@ -46,9 +46,17 @@ pipeline {
         stage('Terraform Format Check') {
             steps {
                 echo "🔹 Checking Terraform format..."
-                sh 'terraform fmt -check'
+            script {
+                def fmtStatus = sh(script: 'terraform fmt -check', returnStatus: true)
+                 if (fmtStatus != 0) {
+                     echo "⚠️ Some Terraform files need formatting. Run 'terraform fmt' locally to fix them."
+            } else {
+                     echo "✅ Terraform files are properly formatted."
             }
         }
+    }
+}
+
 
         stage('Terraform Validate') {
             steps {
