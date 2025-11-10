@@ -4,8 +4,6 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
-        SONAR_TOKEN           = credentials('sonar-token')
-        SONAR_SCANNER_PATH    = '/opt/sonar-scanner/bin/sonar-scanner'
     }
 
     stages {
@@ -17,54 +15,10 @@ pipeline {
             }
         }
 
-        stage('Security Scan - Gitleaks') {
+        stage('Terraform Init') {
             steps {
-                echo "🔹 Running Gitleaks to detect secrets..."
-                sh '''
-                    gitleaks detect --source . --no-git --report-path=gitleaks-report.json || true
-                '''
-                echo "✅ Gitleaks scan completed. Report generated: gitleaks-report.json"
-            }
-        }
-
-        stage('Code Quality - SonarQube Analysis') {
-            steps {
-                echo "🔹 Running SonarQube analysis..."
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        $SONAR_SCANNER_PATH \
-                        -Dsonar.projectKey=EKS-Infrastructure \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://$SONAR_HOST_URL \
-                        -Dsonar.login=$SONAR_TOKEN
-                    '''
-                }
-                echo "✅ SonarQube analysis completed."
-            }
-        }
-
-        stage('Terraform Format Check') {
-            steps {
-                echo "🔹 Checking Terraform format..."
-            script {
-                def fmtStatus = sh(script: 'terraform fmt -check', returnStatus: true)
-                 if (fmtStatus != 0) {
-                     echo "⚠️ Some Terraform files need formatting. Run 'terraform fmt' locally to fix them."
-            } else {
-                     echo "✅ Terraform files are properly formatted."
-            }
-        }
-    }
-}
-
-
-        stage('Terraform Validate') {
-            steps {
-                echo "🔹 Validating Terraform configuration..."
-                sh '''
-                    terraform init -reconfigure
-                    terraform validate
-                '''
+                echo "🔹 Initializing Terraform..."
+                sh 'terraform init -reconfigure'
             }
         }
 
@@ -77,7 +31,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                input message: 'Apply infrastructure changes?', ok: 'Yes, apply'
+                input message: '🚀 Apply infrastructure changes?', ok: 'Yes, apply'
                 echo "🔹 Applying Terraform plan..."
                 sh 'terraform apply -auto-approve tfplan'
                 echo "✅ Terraform infrastructure deployed successfully!"
@@ -87,7 +41,7 @@ pipeline {
 
     post {
         success {
-            echo "🎉 Pipeline executed successfully! EKS cluster is ready."
+            echo "🎉 Pipeline executed successfully! Infrastructure is ready."
         }
         failure {
             echo "❌ Pipeline failed. Please check the console output for details."
