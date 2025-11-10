@@ -127,7 +127,9 @@ resource "aws_eks_addon" "vpc_cni" {
   addon_version            = data.aws_eks_addon_version.vpc_cni.version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
-
+  
+  depends_on = [aws_eks_node_group.main] 
+  
   tags = merge(
     var.tags,
     {
