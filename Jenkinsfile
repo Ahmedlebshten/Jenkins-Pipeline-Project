@@ -31,7 +31,6 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                input message: '🚀 Apply infrastructure changes?', ok: 'Yes, apply'
                 echo "🔹 Applying Terraform plan..."
                 sh 'terraform apply -auto-approve tfplan'
                 echo "✅ Terraform infrastructure deployed successfully!"
