@@ -49,22 +49,17 @@ resource "aws_eks_cluster" "main" {
     security_group_ids      = [var.cluster_security_group_id]
   }
 
-  # Allow both IAM and ConfigMap-based access management
   access_config {
     authentication_mode = "API_AND_CONFIG_MAP"
   }
 
-  dynamic "encryption_config" {
-    for_each = var.enable_cluster_encryption ? [1] : []
-    content {
-      provider {
-        key_arn = aws_kms_key.eks[0].arn
-      }
-      resources = ["secrets"]
-    }
-  }
-
   enabled_cluster_log_types = var.cluster_log_types
+
+  lifecycle {
+    ignore_changes = [
+      access_config[0].authentication_mode
+    ]
+  }
 
   depends_on = [
     aws_cloudwatch_log_group.eks_cluster
