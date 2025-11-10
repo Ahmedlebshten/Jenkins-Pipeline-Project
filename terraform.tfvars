@@ -23,7 +23,7 @@ node_group_desired_size   = 1 # 2 nodes per AZ for HA
 node_group_min_size       = 1
 node_group_max_size       = 2
 node_instance_types       = ["t2.micro"]
-node_disk_size            = 10
+node_disk_size            = 20
 enable_cluster_encryption = true
 
 # Control plane logging
