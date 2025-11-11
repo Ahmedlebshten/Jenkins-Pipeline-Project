@@ -78,10 +78,3 @@ resource "aws_iam_role_policy_attachment" "eks_cloudwatch_policy" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   role       = aws_iam_role.eks_node.name
 }
-
-# Policy for EBS CSI Driver (required for aws-ebs-csi-driver add-on)
-resource "aws_iam_role_policy_attachment" "eks_ebs_csi_driver_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-  role       = aws_iam_role.eks_node.name
-}
-
