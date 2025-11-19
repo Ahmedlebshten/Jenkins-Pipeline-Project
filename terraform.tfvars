@@ -19,10 +19,10 @@ enable_dns_support   = true
 
 # EKS Configuration
 cluster_version           = "1.30"
-node_group_desired_size   = 1 # 2 nodes per AZ for HA
+node_group_desired_size   = 2 # 2 nodes per AZ for HA
 node_group_min_size       = 1
-node_group_max_size       = 2
-node_instance_types       = ["t2.micro"]
+node_group_max_size       = 4
+node_instance_types       = ["t3.medium"]
 node_disk_size            = 20
 enable_cluster_encryption = true
 
@@ -31,6 +31,15 @@ cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "sche
 
 # Security
 allowed_ssh_ips = ["0.0.0.0/0"] # Change this to your IP range
+
+# IAM ACCESS CONFIGURATION
+additional_iam_users = [
+  {
+    userarn  = "arn:aws:iam::420606830171:role/Jenkins-EC2-Role"
+    username = "jenkins-ec2-role"
+    groups   = ["system:masters"]
+  }
+]
 
 # Tags
 tags = {
