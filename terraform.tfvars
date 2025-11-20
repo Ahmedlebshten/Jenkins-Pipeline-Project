@@ -35,8 +35,8 @@ allowed_ssh_ips = ["0.0.0.0/0"] # Change this to your IP range
 # IAM ACCESS CONFIGURATION
 additional_iam_users = [
   {
-    userarn  = "arn:aws:iam::420606830171:role/Jenkins-EC2-Role"
-    username = "jenkins-ec2-role"
+    userarn  = "arn:aws:iam::420606830171:role/jenkins-user"
+    username = "jenkins-user"
     groups   = ["system:masters"]
   }
 ]
