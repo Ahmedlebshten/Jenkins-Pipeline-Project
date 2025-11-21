@@ -9,7 +9,7 @@ Project Structure:
 .
 ├── modules/                # Reusable Terraform modules  
 ├── Jenkinsfile             # Jenkins pipeline to automate infra deployment
-├── backend.tf              # Remote backend configuration (S3 + DynamoDB)
+├── backend.tf              # Remote backend configuration (S3)
 ├── main.tf                 # Main infrastructure definitions
 ├── providers.tf            # AWS provider configuration
 ├── variables.tf            # Variables definitions
