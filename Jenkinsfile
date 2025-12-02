@@ -48,7 +48,7 @@ pipeline {
     success {
         echo "🎉 Infra pipeline succeeded — triggering downstream pipelines..."
 
-        // Trigger CD pipeline that creates the ArgoCD Application
+        // Trigger Install-ArgoCD pipeline that install ArgoCD on EKS cluster
         build job: 'Install-ArgoCD', wait: false, propagate: false
 
         // Trigger CD pipeline that creates the ArgoCD Application
