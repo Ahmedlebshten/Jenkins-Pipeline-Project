@@ -120,7 +120,7 @@ spec:
     path: security-tools
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: security-tools
   syncPolicy:
     automated:
       prune: true
