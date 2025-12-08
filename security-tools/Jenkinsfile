@@ -9,14 +9,20 @@ pipeline {
         stage('Trivy Image Scan') {
             steps {
                 sh '''
-                  echo "🔍 Scanning Docker Image using Trivy..."
+                echo "🔍 Scanning Docker Image using Trivy..."
 
-                  docker run --rm aquasec/trivy:latest image ahmedlebshten/url-shortener:55
+                LATEST_TAG=$(curl -s https://registry.hub.docker.com/v2/repositories/ahmedlebshten/url-shortener/tags/ \
+                | jq -r '.results[0].name')
 
-                  echo "✅ Trivy Image Scan Completed!"
+                echo "➡️ Using tag: $LATEST_TAG"
+
+                docker run --rm aquasec/trivy:latest image ahmedlebshten/url-shortener:$LATEST_TAG
+
+                echo "✅ Trivy Image Scan Completed!"
                 '''
-            }
         }
+      }
+
 
         /* ============================
          🟦 2) Gitleaks Multi-Repo Scan
