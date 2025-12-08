@@ -11,7 +11,7 @@ pipeline {
                 sh '''
                   echo "🔍 Scanning Docker Image using Trivy..."
 
-                  docker run --rm aquasec/trivy:latest image ahmedlebshten/url-shortener:latest
+                  docker run --rm aquasec/trivy:latest image ahmedlebshten/url-shortener:55
 
                   echo "✅ Trivy Image Scan Completed!"
                 '''
