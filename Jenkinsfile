@@ -34,7 +34,7 @@ pipeline {
         }
         
         
-/*
+        /*
         stage('Terraform Destroy') {
             steps {
                 echo "🗑️ Destroying Terraform infrastructure..."
